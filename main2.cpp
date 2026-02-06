@@ -23,8 +23,6 @@ void code()
     button5.mode(PullDown);
 
     int wrongatt = 0;
-    bool lock = false;
-
 
     while (true){
         if(button0 && button1 && button2 && button3 && enterButton){
