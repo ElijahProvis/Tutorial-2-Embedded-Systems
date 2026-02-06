@@ -22,53 +22,36 @@ void code()
     button4.mode(PullDown);
     button5.mode(PullDown);
 
-   int wrongatt = 0;
-bool warningMode = false;
-Timer warningTimer;
+    int wrongatt = 0;
+    bool lock = false;
 
-while (true) {
 
-    // ---- WARNING MODE ----
-    if (warningMode) {
-        redled = !redled;                 // slow blink
-        ThisThread::sleep_for(500ms);
+    while (true){
+        if(button0 && button1 && button2 && button3 && enterButton){
+        ThisThread::sleep_for(300ms);
+        greenled = 1;
+        redled = 0;
+        }
 
-        if (warningTimer.elapsed_time() >= 30s) {
-            warningMode = false;          // unblock system
+        if (!(button0 && button1 && button2 && button3) && enterButton){
+            ThisThread::sleep_for(300ms);
+            greenled = 0;
+            redled = 1; 
+            wrongatt = wrongatt + 1;
+        }
+
+        if(wrongatt>=3){
+            for(int i=0; i<30; i++){
+                redled = !redled;
+                ThisThread::sleep_for(500ms);
+                redled = !redled;
+                ThisThread::sleep_for(500ms);
+            }
             wrongatt = 0;
             redled = 0;
-            warningTimer.stop();
-            warningTimer.reset();
         }
-        continue;                         // block new entries
+    
     }
-
-    // ---- CODE ENTRY ----
-    if (enterButton) {
-
-        if (button0 && button1 && button2 && button3) {
-            greenled = 1;
-            redled = 0;
-            wrongatt = 0;                 // reset on success
-        }
-        else {
-            greenled = 0;
-            redled = 1;
-            wrongatt++;
-        }
-
-        ThisThread::sleep_for(300ms);     // debounce
-    }
-
-    // ---- CHECK WRONG ATTEMPTS ----
-    if (wrongatt >= 3) {
-        warningMode = true;
-        warningTimer.start();
-        greenled = 0;
-        redled = 1;
-    }
-}
-
 }
 
 
