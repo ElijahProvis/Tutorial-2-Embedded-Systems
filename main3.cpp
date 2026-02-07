@@ -63,21 +63,23 @@ void code()
         if (wrongatt == 4 && warned) {
 
             redled = 1;
+        while (true) {
 
-            for (int i = 0; i < 60; i++) {
-                blueled = !blueled;
-                ThisThread::sleep_for(500ms);
-                blueled = !blueled;
-                ThisThread::sleep_for(500ms);
+            if (button2 && button3 && button4 && button5 && enterButton) {
+                ThisThread::sleep_for(300ms);
+                redled = 0;
+                blueled = 0;
+                greenled = 0;
+                wrongatt = 0;
+                warned = false;
+                break;
             }
 
-            redled = 0;
-            blueled = 0;
-            wrongatt = 0;
-            warned = false;
-        }
+            blueled = !blueled;
+            ThisThread::sleep_for(250ms);
     }
-}
+}}}
+
 
 int main()
 {
