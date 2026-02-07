@@ -28,12 +28,14 @@ void code()
 
     int wrongatt = 0;
     bool warned = false;
-    while (true){
+
+    while (true) {
 
         if (button0 && button1 && button2 && button3 && enterButton) {
             ThisThread::sleep_for(300ms);
             greenled = 1;
             redled = 0;
+            blueled = 0;
             wrongatt = 0;
             warned = false;
         }
@@ -42,43 +44,41 @@ void code()
             ThisThread::sleep_for(300ms);
             greenled = 0;
             redled = 1;
-
-            if (warned) {
-                redled = 1;
-
-                for (int i = 0; i < 60; i++) {
-                    blueled = !blueled;
-                    ThisThread::sleep_for(500ms);
-                    blueled = !blueled;
-                    ThisThread::sleep_for(500ms);
-                }
-
-                redled = 0;
-                blueled = 0;
-                warned = false;
-                wrongatt = 0;
-            } else {
-                wrongatt = wrongatt + 1;
-            }
+            wrongatt = wrongatt+1;
         }
 
-        if (wrongatt >= 3) {
+        if (wrongatt == 3 && !warned) {
 
             for (int i = 0; i < 30; i++) {
+                redled = !redled;
+                ThisThread::sleep_for(500ms);
+                redled = !redled;
+                ThisThread::sleep_for(500ms);
+            }
+
+            redled = 0;
+            warned = true;
+        }
+
+        if (wrongatt == 4 && warned) {
+
+            redled = 1;
+
+            for (int i = 0; i < 60; i++) {
                 blueled = !blueled;
                 ThisThread::sleep_for(500ms);
                 blueled = !blueled;
                 ThisThread::sleep_for(500ms);
             }
 
-            wrongatt = 0;
-            warned = true;
             redled = 0;
             blueled = 0;
+            wrongatt = 0;
+            warned = false;
         }
     }
 }
 
-int main(){
-    code();
-}
+int main()
+{
+    code();}
