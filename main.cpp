@@ -22,11 +22,6 @@ void code()
     button4.mode(PullDown);
     button5.mode(PullDown);
 
-    int wrongatt = 0;
-    bool lock = false;
-    Timer t;
-
-
     while (true){
         if(button0 && button1 && button2 && button3 && enterButton){
         greenled = 1;
